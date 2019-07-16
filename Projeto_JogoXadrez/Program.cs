@@ -11,8 +11,7 @@ namespace Projeto_JogoXadrez
     {
         static void Main(string[] args)
         {
-            Posicao posicao = new Posicao(2, 4);
-            Console.WriteLine(posicao);
+            
 
             Console.ReadKey();
         }
