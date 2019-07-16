@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Estrutura\Excessoes\TabuleiroException.cs" />
     <Compile Include="Exibir\Program.cs" />
     <Compile Include="Exibir\Tela.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
