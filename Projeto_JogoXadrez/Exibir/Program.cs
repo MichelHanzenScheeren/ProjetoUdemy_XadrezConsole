@@ -14,10 +14,17 @@ namespace Projeto_JogoXadrez
     {
         static void Main(string[] args)
         {
-            PosicaoXadrez posicaoXadrez = new PosicaoXadrez('C', 7);
-
-            Console.WriteLine(posicaoXadrez);
-            Console.WriteLine(posicaoXadrez.ToPosicao());
+            try
+            {
+                Tabuleiro tabuleiro = new Tabuleiro(8, 8);
+                tabuleiro.ColocarPeca(new Rei(Cor.Azul, tabuleiro), new Posicao(2, 2));
+                tabuleiro.ColocarPeca(new Rei(Cor.Vermelho, tabuleiro), new Posicao(3, 6));
+                Tela.ImprimirTabuleiro(tabuleiro);
+            }
+            catch (TabuleiroException erro)
+            {
+                Console.WriteLine(erro.Message);
+            }
             
 
             Console.ReadKey();
