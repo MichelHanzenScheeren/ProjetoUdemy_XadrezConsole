@@ -21,25 +21,19 @@ namespace Projeto_JogoXadrez
                 {
                     try
                     {
-                        Console.Clear();
                         Tela.ImprimirTabuleiro(partidaDeXadrez.Tabuleiro);
 
                         //ORIGEM
-                        Console.WriteLine("\n  Turno: " + partidaDeXadrez.Turno);
-                        Console.WriteLine("  Aguardando Jogada: " + partidaDeXadrez.JogadorAtual);
-                        Console.Write("  Origem: ");
+                        Tela.ImprimirJogadaParte1(partidaDeXadrez);
                         PosicaoXadrez posicaoXadrez = Tela.LerPosicaoXadrez();
                         Posicao origem = posicaoXadrez.ToPosicao();
                         partidaDeXadrez.ValidarOrigem(origem);
                         bool[,] movimentos = partidaDeXadrez.Tabuleiro.ObterPeca(origem).MovimentosPossiveis();
-                        Console.Clear();
                         Tela.ImprimirTabuleiro(partidaDeXadrez.Tabuleiro, movimentos, origem);
 
                         //DESTINO
-                        Console.WriteLine("\n  Turno: " + partidaDeXadrez.Turno);
-                        Console.WriteLine("  Aguardando Jogada: " + partidaDeXadrez.JogadorAtual);
-                        Console.WriteLine("  Origem: " + posicaoXadrez);
-                        Console.Write("  Destino: ");
+                        Tela.ImprimirJogadaParte1(partidaDeXadrez);
+                        Tela.ImprimirJogadaParte2(posicaoXadrez);
                         Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
                         partidaDeXadrez.ValidarDestino(origem, destino);
                         partidaDeXadrez.NovaJogada(origem, destino);

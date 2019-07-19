@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Estrutura;
 using Excessoes;
 using Xadrez;
@@ -7,8 +8,41 @@ namespace Exibir
 {
     class Tela
     {
+        public static void ImprimirJogadaParte1(PartidaDeXadrez partidaDeXadrez)
+        {
+            ConsoleColor padrao = Console.ForegroundColor;
+            Console.WriteLine("\n  Peças Capturadas:");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("  Azuis: ");
+            ImprimirPecasCapturadas(partidaDeXadrez.PecasCapturadas(Cor.Azul));
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("  Vermelhas: ");
+            ImprimirPecasCapturadas(partidaDeXadrez.PecasCapturadas(Cor.Vermelho));
+            Console.ForegroundColor = padrao;
+            Console.WriteLine("\n  Turno: " + partidaDeXadrez.Turno);
+            Console.WriteLine("  Aguardando Jogada: " + partidaDeXadrez.JogadorAtual);
+            Console.Write("\n  Origem: ");
+        }
+
+        private static void ImprimirPecasCapturadas(HashSet<Peca> capturadas)
+        {
+            Console.Write("[ ");
+            foreach (var item in capturadas)
+            {
+                Console.Write(item + " ");
+            }
+            Console.WriteLine("]");
+        }
+
+        public static void ImprimirJogadaParte2(PosicaoXadrez posicaoXadrez)
+        {
+            Console.WriteLine(posicaoXadrez);
+            Console.Write("  Destino: ");
+        }
+
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro)
         {
+            Console.Clear();
             Console.WriteLine("\n          JOGO DE XADREZ");
             string[] legenda = new string[tabuleiro.Linhas];
             PreencherLegenda(legenda, tabuleiro.Linhas);
@@ -33,24 +67,9 @@ namespace Exibir
             Console.WriteLine();
         }
 
-        private static void PreencherLegenda(string[] legenda, int tamanho)
-        {
-            legenda[0] = "'R' = Rei;";
-            legenda[1] = "'D' = Dama(Rainha);";
-            legenda[2] = "'T' = Torre;";
-            legenda[3] = "'B' = Bispo;";
-            legenda[4] = "'C' = Cavalo;";
-            legenda[5] = "'P' = Peão.";
-            legenda[6] = "Amarelo  = Peça Selecionada;";
-            legenda[7] = "Cinza  = Movimentos Possíveis.";
-            for (int i = 8; i < tamanho; i++)
-            {
-                legenda[i] = "";
-            }
-        }
-
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro, bool[,] movimentos, Posicao pecaSelecionada)
         {
+            Console.Clear();
             string[] legenda = new string[tabuleiro.Linhas];
             PreencherLegenda(legenda, tabuleiro.Linhas);
 
@@ -89,6 +108,22 @@ namespace Exibir
                 aux = Convert.ToChar(aux + 1);
             }
             Console.WriteLine();
+        }
+
+        private static void PreencherLegenda(string[] legenda, int tamanho)
+        {
+            legenda[0] = "'R' = Rei;";
+            legenda[1] = "'D' = Dama(Rainha);";
+            legenda[2] = "'T' = Torre;";
+            legenda[3] = "'B' = Bispo;";
+            legenda[4] = "'C' = Cavalo;";
+            legenda[5] = "'P' = Peão.";
+            legenda[6] = "Amarelo  = Peça Selecionada;";
+            legenda[7] = "Cinza  = Movimentos Possíveis.";
+            for (int i = 8; i < tamanho; i++)
+            {
+                legenda[i] = "";
+            }
         }
 
         public static void ImprimirPeca(Peca peca)
