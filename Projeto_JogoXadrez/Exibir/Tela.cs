@@ -1,5 +1,6 @@
 ﻿using System;
 using Estrutura;
+using Excessoes;
 using Xadrez;
 
 namespace Exibir
@@ -8,6 +9,7 @@ namespace Exibir
     {
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro)
         {
+            Console.WriteLine("\n          JOGO DE XADREZ");
             string[] legenda = new string[tabuleiro.Linhas];
             PreencherLegenda(legenda, tabuleiro.Linhas);
             Console.WriteLine();
@@ -39,7 +41,9 @@ namespace Exibir
             legenda[3] = "'B' = Bispo;";
             legenda[4] = "'C' = Cavalo;";
             legenda[5] = "'P' = Peão.";
-            for (int i = 7; i < tamanho; i++)
+            legenda[6] = "Amarelo  = Peça Selecionada;";
+            legenda[7] = "Cinza  = Movimentos Possíveis.";
+            for (int i = 8; i < tamanho; i++)
             {
                 legenda[i] = "";
             }
@@ -48,10 +52,12 @@ namespace Exibir
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro, bool[,] movimentos, Posicao pecaSelecionada)
         {
             string[] legenda = new string[tabuleiro.Linhas];
-            PreencherLegenda(legenda, tabuleiro.Linhas, true);
+            PreencherLegenda(legenda, tabuleiro.Linhas);
 
             ConsoleColor fundoOriginal = Console.BackgroundColor;
             ConsoleColor novoFundo = ConsoleColor.DarkGray;
+
+            Console.WriteLine("\n          JOGO DE XADREZ");
             Console.WriteLine();
             for (int i = 0; i < tabuleiro.Linhas; i++)
             {
@@ -85,22 +91,6 @@ namespace Exibir
             Console.WriteLine();
         }
 
-        private static void PreencherLegenda(string[] legenda, int tamanho, bool diferenciador)
-        {
-            legenda[0] = "'R' = Rei;";
-            legenda[1] = "'D' = Dama(Rainha);";
-            legenda[2] = "'T' = Torre;";
-            legenda[3] = "'B' = Bispo;";
-            legenda[4] = "'C' = Cavalo;";
-            legenda[5] = "'P' = Peão;";
-            legenda[6] = "Amarelo  = Peça Selecionada;";
-            legenda[7] = "Cinza  = Movimentos Possíveis.";
-            for (int i = 8; i < tamanho; i++)
-            {
-                legenda[i] = "";
-            }
-        }
-
         public static void ImprimirPeca(Peca peca)
         {
 
@@ -122,7 +112,11 @@ namespace Exibir
         public static PosicaoXadrez LerPosicaoXadrez()
         {
             string posicao = Console.ReadLine();
-            char coluna = posicao[0];
+            if(!char.IsLetter(posicao[0]) || !char.IsNumber(posicao[1]))
+                throw new TabuleiroException("A POSIÇÃO INFORMADA É INVÁLIDA!");
+
+            char coluna = char.ToLower(posicao[0]);
+            
             int linha = Convert.ToInt32(posicao[1] + "");
             return new PosicaoXadrez(coluna, linha);
         }
