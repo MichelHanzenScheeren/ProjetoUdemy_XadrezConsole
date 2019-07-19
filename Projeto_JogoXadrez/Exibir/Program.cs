@@ -16,10 +16,20 @@ namespace Projeto_JogoXadrez
         {
             try
             {
-                Tabuleiro tabuleiro = new Tabuleiro(8, 8);
-                tabuleiro.ColocarPeca(new Rei(Cor.Azul, tabuleiro), new Posicao(2, 2));
-                tabuleiro.ColocarPeca(new Rei(Cor.Vermelho, tabuleiro), new Posicao(3, 6));
-                Tela.ImprimirTabuleiro(tabuleiro);
+                PartidaDeXadrez partidaDeXadrez = new PartidaDeXadrez();
+                while(!partidaDeXadrez.Terminada)
+                {
+                    Console.Clear();
+                    Tela.ImprimirTabuleiro(partidaDeXadrez.Tabuleiro);
+                    Console.WriteLine();
+
+                    Console.Write("  Origem: ");
+                    Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
+                    Console.Write("  Destino: ");
+                    Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
+                    partidaDeXadrez.ExecutaMovimento(origem, destino);
+
+                } 
             }
             catch (TabuleiroException erro)
             {

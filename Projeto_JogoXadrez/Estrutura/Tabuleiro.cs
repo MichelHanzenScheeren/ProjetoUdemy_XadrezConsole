@@ -34,6 +34,17 @@ namespace Estrutura
             peca.Posicao = posicao;
         }
 
+        public Peca RemoverPeca(Posicao posicao)
+        {
+            if (ObterPeca(posicao) == null)
+                return null;
+
+            Peca aux = ObterPeca(posicao);
+            aux.Posicao = null;
+            _pecas[posicao.Linha, posicao.Coluna] = null;
+            return aux;
+        }
+
         public bool VerificarPosicao(Posicao posicao)
         {
             if (posicao.Linha < 0 || posicao.Coluna < 0 || posicao.Linha >= Linhas || posicao.Coluna >= Colunas)
