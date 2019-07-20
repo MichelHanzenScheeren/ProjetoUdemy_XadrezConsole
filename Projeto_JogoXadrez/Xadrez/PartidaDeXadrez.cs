@@ -10,7 +10,7 @@ namespace Xadrez
     {
         public Tabuleiro Tabuleiro { get; private set; }
         public bool Terminada { get; private set; }
-        public int Turno { get; private set; } //Quantidade de jogadas da partida
+        public int Turno { get; private set; }
         public Cor JogadorAtual { get; private set; }
 
         private HashSet<Peca> _pecasNaPartida;
@@ -65,13 +65,14 @@ namespace Xadrez
 
         public void NovaJogada(Posicao origem, Posicao destino)
         {
-            Peca pecaCapturada = ExecutaMovimento(origem, destino);
+            Peca pecaCapturada = ExecutarMovimento(origem, destino);
             if (EstaEmXeque())
             {
                 DesfazerMovimento(origem, destino, pecaCapturada);
                 throw new TabuleiroException("UM JOGADOR NÃO PODE SE COLOCAR EM XEQUE!");
             }
             Peca peca = Tabuleiro.ObterPeca(destino);
+
             //Teste Jogada Especial "Promoção" (trocar peão por dama se chegar ao outro lado do tabuleiro)
             if(peca is Peao)
             {
@@ -94,6 +95,19 @@ namespace Xadrez
                 IncrementaTurno();
         }
 
+        private Peca ExecutarMovimento(Posicao origem, Posicao destino)
+        {
+            Peca peca = Tabuleiro.RemoverPeca(origem);
+            peca.IncrementarQtdMovimentos();
+            Peca pecaCapturada = Tabuleiro.RemoverPeca(destino);
+            Tabuleiro.ColocarPeca(peca, destino);
+
+            if (pecaCapturada != null)
+                _pecasCapturadas.Add(pecaCapturada);
+
+            return pecaCapturada;
+        }
+
         private void DesfazerMovimento(Posicao origem, Posicao destino, Peca pecaCapturada)
         {
             Peca peca = Tabuleiro.RemoverPeca(destino);
@@ -105,18 +119,6 @@ namespace Xadrez
             }
             Tabuleiro.ColocarPeca(peca, origem);
         }
-
-        private Peca ExecutaMovimento(Posicao origem, Posicao destino)
-        {
-            Peca peca = Tabuleiro.RemoverPeca(origem);
-            peca.IncrementarQtdMovimentos();
-            Peca pecaCapturada = Tabuleiro.RemoverPeca(destino);
-            Tabuleiro.ColocarPeca(peca, destino);
-            if (pecaCapturada != null)
-                _pecasCapturadas.Add(pecaCapturada);
-
-            return pecaCapturada;
-        } 
 
         private void IncrementaTurno()
         {
@@ -221,9 +223,10 @@ namespace Xadrez
                         {
                             Posicao origem = item.Posicao;
                             Posicao destino = new Posicao(i, j);
-                            Peca pecaCapturada = ExecutaMovimento(origem, destino);
+                            Peca pecaCapturada = ExecutarMovimento(origem, destino);
                             bool testeXeque = EstaEmXeque();
                             DesfazerMovimento(origem, destino, pecaCapturada);
+
                             if (!testeXeque)
                                 return false;
                         }

@@ -8,52 +8,10 @@ namespace Exibir
 {
     class Tela
     {
-        public static void ImprimirJogadaParte1(PartidaDeXadrez partidaDeXadrez)
-        {
-            ConsoleColor padrao = Console.ForegroundColor;
-            Console.WriteLine("\n  Peças Capturadas:");
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.Write("  Azuis: ");
-            ImprimirPecasCapturadas(partidaDeXadrez.PecasCapturadas(Cor.Azul));
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write("  Vermelhas: ");
-            ImprimirPecasCapturadas(partidaDeXadrez.PecasCapturadas(Cor.Vermelho));
-            Console.ForegroundColor = padrao;
-            Console.WriteLine("\n  Turno: " + partidaDeXadrez.Turno);
-            if (!partidaDeXadrez.Terminada)
-            {
-                Console.WriteLine("  Aguardando Jogada: " + partidaDeXadrez.JogadorAtual);
-                if (partidaDeXadrez.EstaEmXeque())
-                    Console.WriteLine("\n  O JOGADOR ATUAL ESTÁ EM XEQUE!");
-                Console.Write("\n  Origem: ");
-            }
-            else
-            {
-                Console.WriteLine("\n  XEQUE-MATE!");
-                Console.Write("  Vencedor: Jogador " + partidaDeXadrez.JogadorAdversario());
-            }
-        }
-
-        private static void ImprimirPecasCapturadas(HashSet<Peca> capturadas)
-        {
-            Console.Write("[ ");
-            foreach (var item in capturadas)
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine("]");
-        }
-
-        public static void ImprimirJogadaParte2(PosicaoXadrez posicaoXadrez)
-        {
-            Console.WriteLine(posicaoXadrez);
-            Console.Write("  Destino: ");
-        }
-
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro)
         {
             Console.Clear();
-            Console.WriteLine("\n          JOGO DE XADREZ");
+            Console.WriteLine("\n          XADREZ DO MIXÉU");
             string[] legenda = new string[tabuleiro.Linhas];
             PreencherLegenda(legenda, tabuleiro.Linhas);
             Console.WriteLine();
@@ -65,7 +23,7 @@ namespace Exibir
                     ImprimirPeca(tabuleiro.ObterPeca(i, j));
                 }
                 Console.Write(" " + (tabuleiro.Linhas - i) + "  ");
-                Console.WriteLine("\t\t" + legenda[i]);
+                Console.WriteLine("\t\t\t" + legenda[i]);
             }
             Console.Write("   ");
             char aux = 'a';
@@ -102,8 +60,8 @@ namespace Exibir
                         else
                             Console.BackgroundColor = fundoOriginal;
                     }
-                        
-                    
+
+
                     ImprimirPeca(tabuleiro.ObterPeca(i, j));
                 }
                 Console.BackgroundColor = fundoOriginal;
@@ -113,24 +71,66 @@ namespace Exibir
             Console.Write("   ");
             char aux = 'a';
             for (int i = 0; i < tabuleiro.Colunas; i++)
-            { 
+            {
                 Console.Write(" " + aux + " ");
                 aux = Convert.ToChar(aux + 1);
             }
             Console.WriteLine();
         }
 
+        public static void ImprimirJogadaParte1(PartidaDeXadrez partidaDeXadrez)
+        {
+            ConsoleColor padrao = Console.ForegroundColor;
+            Console.WriteLine("\n  Peças Capturadas:");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("  Azuis: ");
+            ImprimirPecasCapturadas(partidaDeXadrez.PecasCapturadas(Cor.Azul));
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("  Vermelhas: ");
+            ImprimirPecasCapturadas(partidaDeXadrez.PecasCapturadas(Cor.Vermelho));
+            Console.ForegroundColor = padrao;
+            Console.WriteLine("\n  Turno: " + partidaDeXadrez.Turno);
+            if (!partidaDeXadrez.Terminada)
+            {
+                Console.WriteLine("  Aguardando Jogada: " + partidaDeXadrez.JogadorAtual);
+                if (partidaDeXadrez.EstaEmXeque())
+                    Console.WriteLine("\n  O JOGADOR ATUAL ESTÁ EM XEQUE!");
+                Console.Write("\n  Origem: ");
+            }
+            else
+            {
+                Console.WriteLine("\n  XEQUE-MATE!");
+                Console.Write("  Vencedor: Jogador " + partidaDeXadrez.JogadorAdversario());
+            }
+        }
+
+        public static void ImprimirJogadaParte2(PosicaoXadrez posicaoXadrez)
+        {
+            Console.WriteLine(posicaoXadrez);
+            Console.Write("  Destino: ");
+        }
+
+        private static void ImprimirPecasCapturadas(HashSet<Peca> capturadas)
+        {
+            Console.Write("[ ");
+            foreach (var item in capturadas)
+            {
+                Console.Write(item + " ");
+            }
+            Console.WriteLine("]");
+        }
+
         private static void PreencherLegenda(string[] legenda, int tamanho)
         {
-            legenda[0] = "'R' = Rei;";
-            legenda[1] = "'D' = Dama(Rainha);";
-            legenda[2] = "'T' = Torre;";
-            legenda[3] = "'B' = Bispo;";
-            legenda[4] = "'C' = Cavalo;";
-            legenda[5] = "'P' = Peão.";
-            legenda[6] = "Amarelo  = Peça Selecionada;";
-            legenda[7] = "Cinza  = Movimentos Possíveis.";
-            for (int i = 8; i < tamanho; i++)
+            legenda[0] = "LEGENDA:";
+            legenda[1] = "";
+            legenda[2] = "R = Rei            D = Dama";
+            legenda[3] = "B = Bispo          T = Torre";
+            legenda[4] = "C = Cavalo         P = Peão";
+            legenda[5] = "Fundo Amarelo = Peça Selecionada;";
+            legenda[6] = "Fundo Cinza = Movimentos Possíveis.";
+
+            for (int i = 7; i < tamanho; i++)
             {
                 legenda[i] = "";
             }
@@ -158,7 +158,7 @@ namespace Exibir
         {
             string posicao = Console.ReadLine();
             if(!char.IsLetter(posicao[0]) || !char.IsNumber(posicao[1]))
-                throw new TabuleiroException("A POSIÇÃO INFORMADA É INVÁLIDA!");
+                throw new TabuleiroException("A POSIÇÃO INFORMADA NÃO É VÁLIDA!");
 
             char coluna = char.ToLower(posicao[0]);
             
