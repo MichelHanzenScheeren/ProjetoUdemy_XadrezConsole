@@ -21,6 +21,8 @@ namespace Exibir
             Console.ForegroundColor = padrao;
             Console.WriteLine("\n  Turno: " + partidaDeXadrez.Turno);
             Console.WriteLine("  Aguardando Jogada: " + partidaDeXadrez.JogadorAtual);
+            if(partidaDeXadrez.EstaEmXeque())
+                Console.WriteLine("\n  O JOGADOR ATUAL ESTÁ EM XEQUE!");
             Console.Write("\n  Origem: ");
         }
 
