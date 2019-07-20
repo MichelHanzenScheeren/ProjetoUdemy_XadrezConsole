@@ -83,7 +83,7 @@ namespace Xadrez
                     Peca dama = new Dama(peca.Cor, Tabuleiro);
                     Tabuleiro.ColocarPeca(dama, destino);
                     _pecasNaPartida.Add(dama);
-                    Tela.JogadaEspecialPromocao(destino);
+                    Tela.JogadaEspecialPromocao();
                 }
             }
 

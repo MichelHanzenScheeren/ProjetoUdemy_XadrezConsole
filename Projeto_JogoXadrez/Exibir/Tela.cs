@@ -20,7 +20,7 @@ namespace Exibir
                 Console.Write("   ");
                 for (int j = 0; j < tabuleiro.Colunas; j++)
                 {
-                    ImprimirPeca(tabuleiro.ObterPeca(i, j));
+                    ImprimirPeca(tabuleiro.ObterPeca(i, j), i, j);
                 }
                 Console.Write(" " + (tabuleiro.Linhas - i) + "  ");
                 Console.WriteLine("\t\t\t" + legenda[i]);
@@ -42,7 +42,7 @@ namespace Exibir
             PreencherLegenda(legenda, tabuleiro.Linhas);
 
             ConsoleColor fundoOriginal = Console.BackgroundColor;
-            ConsoleColor novoFundo = ConsoleColor.DarkGray;
+            ConsoleColor novoFundo = ConsoleColor.Yellow;
 
             Console.WriteLine("\n          JOGO DE XADREZ");
             Console.WriteLine();
@@ -56,13 +56,12 @@ namespace Exibir
                     else
                     {
                         if (pecaSelecionada.Linha == i && pecaSelecionada.Coluna == j)
-                            Console.BackgroundColor = ConsoleColor.DarkYellow;
+                            Console.BackgroundColor = ConsoleColor.Green;
                         else
                             Console.BackgroundColor = fundoOriginal;
                     }
 
-
-                    ImprimirPeca(tabuleiro.ObterPeca(i, j));
+                    ImprimirPeca(tabuleiro.ObterPeca(i, j), i, j);
                 }
                 Console.BackgroundColor = fundoOriginal;
                 Console.Write(" " + (tabuleiro.Linhas - i));
@@ -89,7 +88,7 @@ namespace Exibir
             Console.Write("  Vermelhas: ");
             ImprimirPecasCapturadas(partidaDeXadrez.PecasCapturadas(Cor.Vermelho));
             Console.ForegroundColor = padrao;
-            Console.WriteLine("\n  Turno: " + partidaDeXadrez.Turno);
+            Console.WriteLine("\n  Turno: " + partidaDeXadrez.Turno + "º");
             if (!partidaDeXadrez.Terminada)
             {
                 Console.WriteLine("  Aguardando Jogada: " + partidaDeXadrez.JogadorAtual);
@@ -136,11 +135,13 @@ namespace Exibir
             }
         }
 
-        public static void ImprimirPeca(Peca peca)
+        public static void ImprimirPeca(Peca peca, int linha, int coluna)
         {
+            if(Console.BackgroundColor == ConsoleColor.Black)
+                AlterarFundo(linha, coluna);
 
             if (peca == null)
-                Console.Write(" - ");
+                Console.Write("   ");
             else
             {
                 ConsoleColor consoleColor = Console.ForegroundColor;
@@ -152,24 +153,68 @@ namespace Exibir
                 Console.Write(" " + peca + " ");
                 Console.ForegroundColor = consoleColor;
             }
+            VoltarFundo();
+        }
+
+        private static void AlterarFundo(int linha, int coluna)
+        {
+            if(linha % 2 == 0)
+            {
+                if(coluna % 2 == 0)
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+            }
+            else
+            {
+                if (coluna % 2 == 0)
+                {
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                }
+            }
+        }
+
+        public static void VoltarFundo()
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
         }
 
         public static PosicaoXadrez LerPosicaoXadrez()
         {
             string posicao = Console.ReadLine();
-            if(!char.IsLetter(posicao[0]) || !char.IsNumber(posicao[1]))
-                throw new TabuleiroException("A POSIÇÃO INFORMADA NÃO É VÁLIDA!");
 
-            char coluna = char.ToLower(posicao[0]);
-            
-            int linha = Convert.ToInt32(posicao[1] + "");
-            return new PosicaoXadrez(coluna, linha);
+            if( (char.IsLetter(posicao[0]) && char.IsNumber(posicao[1])) || (char.IsLetter(posicao[1]) && char.IsNumber(posicao[0])) )
+            {
+                char coluna;
+                int linha;
+                if (char.IsLetter(posicao[0]))
+                {
+                    coluna = char.ToLower(posicao[0]);
+                    linha = Convert.ToInt32(posicao[1] + "");
+                }
+                else
+                {
+                    coluna = char.ToLower(posicao[1]);
+                    linha = Convert.ToInt32(posicao[0] + "");
+                }
+                return new PosicaoXadrez(coluna, linha);
+            }
+            else
+                throw new TabuleiroException("A POSIÇÃO INFORMADA NÃO É VÁLIDA!");
         }
 
-        public static void JogadaEspecialPromocao(Posicao posicao)
+        public static void JogadaEspecialPromocao()
         {
-            Console.WriteLine("\n  JOGADA ESPECIAL 'PROMOÇÃO' DETECTADA! O PEÃO " + posicao + " SERÁ SUBSTITUÍDO!");
-            Console.Write("  PELAS REGRAS: QUANDO UM PEÃO ALCANÇA O FIM DO TABULEIRO ADVERSÁRIO, É SUBSTITUÍDO POR UMA DAMA!");
+            Console.WriteLine("\n  JOGADA ESPECIAL 'PROMOÇÃO' DETECTADA!");
+            Console.Write("  NO XADREZ, QUANDO UM PEÃO ALCANÇA O FIM DO TABULEIRO ADVERSÁRIO É SUBSTITUÍDO POR UMA DAMA!");
             Console.ReadKey();
         }
     }

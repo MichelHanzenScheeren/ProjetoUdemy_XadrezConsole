@@ -33,6 +33,7 @@ namespace Xadrez
         {
             bool[,] movimentos = new bool[Tabuleiro.Linhas, Tabuleiro.Colunas];
             Posicao aux = new Posicao(0, 0);
+            Posicao aux2 = new Posicao(0, 0);
 
             if(Cor == Cor.Vermelho)
             {
@@ -41,7 +42,8 @@ namespace Xadrez
                     movimentos[aux.Linha, aux.Coluna] = true;
 
                 aux.DefinirPosicao(Posicao.Linha - 2, Posicao.Coluna);
-                if (Tabuleiro.VerificarPosicao(aux) && Livre(aux) && QtdMovimentos == 0)
+                aux2.DefinirPosicao(Posicao.Linha - 1, Posicao.Coluna);
+                if (Tabuleiro.VerificarPosicao(aux) && Livre(aux) && Livre(aux2) && QtdMovimentos == 0)
                     movimentos[aux.Linha, aux.Coluna] = true;
 
                 aux.DefinirPosicao(Posicao.Linha - 1, Posicao.Coluna - 1);
@@ -59,7 +61,8 @@ namespace Xadrez
                     movimentos[aux.Linha, aux.Coluna] = true;
 
                 aux.DefinirPosicao(Posicao.Linha + 2, Posicao.Coluna);
-                if (Tabuleiro.VerificarPosicao(aux) && Livre(aux) && QtdMovimentos == 0)
+                aux2.DefinirPosicao(Posicao.Linha + 1, Posicao.Coluna);
+                if (Tabuleiro.VerificarPosicao(aux) && Livre(aux) && Livre(aux2) && QtdMovimentos == 0)
                     movimentos[aux.Linha, aux.Coluna] = true;
 
                 aux.DefinirPosicao(Posicao.Linha + 1, Posicao.Coluna - 1);
