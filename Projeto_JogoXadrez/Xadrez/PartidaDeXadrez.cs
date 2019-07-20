@@ -35,14 +35,33 @@ namespace Xadrez
 
         private void ColocarPecas()
         {
-            InserirPecaPosicao('a', 1, new Rei(Cor.Vermelho, Tabuleiro));
-            InserirPecaPosicao('d', 8, new Rei(Cor.Azul, Tabuleiro));
+            InserirPecaPosicao('e', 1, new Rei(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('d', 1, new Dama(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('c', 1, new Bispo(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('f', 1, new Bispo(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('b', 1, new Cavalo(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('g', 1, new Cavalo(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('a', 1, new Torre(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('h', 1, new Torre(Cor.Vermelho, Tabuleiro));
+
+            InserirPecaPosicao('e', 8, new Rei(Cor.Azul, Tabuleiro));
+            InserirPecaPosicao('d', 8, new Dama(Cor.Azul, Tabuleiro));
+            InserirPecaPosicao('c', 8, new Bispo(Cor.Azul, Tabuleiro));
+            InserirPecaPosicao('f', 8, new Bispo(Cor.Azul, Tabuleiro));
+            InserirPecaPosicao('b', 8, new Cavalo(Cor.Azul, Tabuleiro));
+            InserirPecaPosicao('g', 8, new Cavalo(Cor.Azul, Tabuleiro));
+            InserirPecaPosicao('a', 8, new Torre(Cor.Azul, Tabuleiro));
+            InserirPecaPosicao('h', 8, new Torre(Cor.Azul, Tabuleiro));
+
+            char coluna = 'a';
+            for (int i = 0; i < Tabuleiro.Colunas; i++)
+            {
+                InserirPecaPosicao(coluna, 2, new Peao(Cor.Vermelho, Tabuleiro));
+                InserirPecaPosicao(coluna, 7, new Peao(Cor.Azul, Tabuleiro));
+                coluna = Convert.ToChar(coluna + 1);
+            }
 
 
-            InserirPecaPosicao('a', 2, new Torre(Cor.Azul, Tabuleiro));
-            InserirPecaPosicao('b', 2, new Torre(Cor.Azul, Tabuleiro));
-            InserirPecaPosicao('h', 1, new Torre(Cor.Azul, Tabuleiro));
-            //InserirPecaPosicao('a', 1, new Torre(Cor.Azul, Tabuleiro));
 
         }
 
@@ -115,7 +134,7 @@ namespace Xadrez
         {
             if (!Tabuleiro.VerificarPosicao(destino))
                 throw new TabuleiroException("A POSIÇÃO INFORMADA É INVÁLIDA!");
-            if (!Tabuleiro.ObterPeca(origem).PodeMoverPara(destino))
+            if (!Tabuleiro.ObterPeca(origem).MovimentoPossivel(destino))
                 throw new TabuleiroException("A PEÇA SELECIONADA NÂO PODE MOVER PARA ESSA POSIÇÃO!");
         }
 
