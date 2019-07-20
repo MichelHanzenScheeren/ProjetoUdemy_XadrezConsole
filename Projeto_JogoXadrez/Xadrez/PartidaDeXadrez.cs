@@ -1,5 +1,6 @@
 ﻿using Estrutura;
 using Excessoes;
+using Exibir;
 using System;
 using System.Collections.Generic;
 
@@ -60,9 +61,6 @@ namespace Xadrez
                 InserirPecaPosicao(coluna, 7, new Peao(Cor.Azul, Tabuleiro));
                 coluna = Convert.ToChar(coluna + 1);
             }
-
-
-
         }
 
         public void NovaJogada(Posicao origem, Posicao destino)
@@ -73,6 +71,21 @@ namespace Xadrez
                 DesfazerMovimento(origem, destino, pecaCapturada);
                 throw new TabuleiroException("UM JOGADOR NÃO PODE SE COLOCAR EM XEQUE!");
             }
+            Peca peca = Tabuleiro.ObterPeca(destino);
+            //Teste Jogada Especial "Promoção" (trocar peão por dama se chegar ao outro lado do tabuleiro)
+            if(peca is Peao)
+            {
+                if((peca.Cor == Cor.Azul && destino.Linha == 7) || (peca.Cor == Cor.Vermelho && destino.Linha == 0))
+                {
+                    peca = Tabuleiro.RemoverPeca(destino);
+                    _pecasNaPartida.Remove(peca);
+                    Peca dama = new Dama(peca.Cor, Tabuleiro);
+                    Tabuleiro.ColocarPeca(dama, destino);
+                    _pecasNaPartida.Add(dama);
+                    Tela.JogadaEspecialPromocao(destino);
+                }
+            }
+
             AlteraJogador();
 
             if (EstaXequeMate())

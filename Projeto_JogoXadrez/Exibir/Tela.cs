@@ -165,5 +165,12 @@ namespace Exibir
             int linha = Convert.ToInt32(posicao[1] + "");
             return new PosicaoXadrez(coluna, linha);
         }
+
+        public static void JogadaEspecialPromocao(Posicao posicao)
+        {
+            Console.WriteLine("\n  JOGADA ESPECIAL 'PROMOÇÃO' DETECTADA! O PEÃO " + posicao + " SERÁ SUBSTITUÍDO!");
+            Console.Write("  PELAS REGRAS: QUANDO UM PEÃO ALCANÇA O FIM DO TABULEIRO ADVERSÁRIO, É SUBSTITUÍDO POR UMA DAMA!");
+            Console.ReadKey();
+        }
     }
 }
