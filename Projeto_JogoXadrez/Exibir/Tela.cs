@@ -20,10 +20,18 @@ namespace Exibir
             ImprimirPecasCapturadas(partidaDeXadrez.PecasCapturadas(Cor.Vermelho));
             Console.ForegroundColor = padrao;
             Console.WriteLine("\n  Turno: " + partidaDeXadrez.Turno);
-            Console.WriteLine("  Aguardando Jogada: " + partidaDeXadrez.JogadorAtual);
-            if(partidaDeXadrez.EstaEmXeque())
-                Console.WriteLine("\n  O JOGADOR ATUAL ESTÁ EM XEQUE!");
-            Console.Write("\n  Origem: ");
+            if (!partidaDeXadrez.Terminada)
+            {
+                Console.WriteLine("  Aguardando Jogada: " + partidaDeXadrez.JogadorAtual);
+                if (partidaDeXadrez.EstaEmXeque())
+                    Console.WriteLine("\n  O JOGADOR ATUAL ESTÁ EM XEQUE!");
+                Console.Write("\n  Origem: ");
+            }
+            else
+            {
+                Console.WriteLine("\n  XEQUE-MATE!");
+                Console.Write("  Vencedor: Jogador " + partidaDeXadrez.JogadorAdversario());
+            }
         }
 
         private static void ImprimirPecasCapturadas(HashSet<Peca> capturadas)

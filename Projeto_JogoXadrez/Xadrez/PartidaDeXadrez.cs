@@ -35,14 +35,14 @@ namespace Xadrez
 
         private void ColocarPecas()
         {
-            InserirPecaPosicao('d', 1, new Rei(Cor.Azul, Tabuleiro));
-            InserirPecaPosicao('d', 8, new Rei(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('a', 1, new Rei(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('d', 8, new Rei(Cor.Azul, Tabuleiro));
 
 
-            InserirPecaPosicao('a', 8, new Torre(Cor.Vermelho, Tabuleiro));
-            InserirPecaPosicao('h', 8, new Torre(Cor.Vermelho, Tabuleiro));
+            InserirPecaPosicao('a', 2, new Torre(Cor.Azul, Tabuleiro));
+            InserirPecaPosicao('b', 2, new Torre(Cor.Azul, Tabuleiro));
             InserirPecaPosicao('h', 1, new Torre(Cor.Azul, Tabuleiro));
-            InserirPecaPosicao('a', 1, new Torre(Cor.Azul, Tabuleiro));
+            //InserirPecaPosicao('a', 1, new Torre(Cor.Azul, Tabuleiro));
 
         }
 
@@ -54,9 +54,12 @@ namespace Xadrez
                 DesfazerMovimento(origem, destino, pecaCapturada);
                 throw new TabuleiroException("UM JOGADOR NÃO PODE SE COLOCAR EM XEQUE!");
             }
-                
-            IncrementaTurno();
             AlteraJogador();
+
+            if (EstaXequeMate())
+                Terminada = true;
+            else
+                IncrementaTurno();
         }
 
         private void DesfazerMovimento(Posicao origem, Posicao destino, Peca pecaCapturada)
@@ -69,7 +72,6 @@ namespace Xadrez
                 _pecasCapturadas.Remove(pecaCapturada);
             }
             Tabuleiro.ColocarPeca(peca, origem);
-
         }
 
         private Peca ExecutaMovimento(Posicao origem, Posicao destino)
@@ -164,11 +166,39 @@ namespace Xadrez
             return null;
         }
 
-        private Cor JogadorAdversario()
+        public Cor JogadorAdversario()
         {
             if (JogadorAtual == Cor.Azul)
                 return Cor.Vermelho;
             return Cor.Azul;   
+        }
+
+        private bool EstaXequeMate()
+        {
+            if (!EstaEmXeque())
+                return false;
+
+            foreach (var item in PecasEmJogo(JogadorAtual))
+            {
+                bool[,] movimentos = item.MovimentosPossiveis();
+                for (int i = 0; i < Tabuleiro.Linhas; i++)
+                {
+                    for (int j = 0; j < Tabuleiro.Colunas; j++)
+                    {
+                        if (movimentos[i, j])
+                        {
+                            Posicao origem = item.Posicao;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecaCapturada = ExecutaMovimento(origem, destino);
+                            bool testeXeque = EstaEmXeque();
+                            DesfazerMovimento(origem, destino, pecaCapturada);
+                            if (!testeXeque)
+                                return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
 

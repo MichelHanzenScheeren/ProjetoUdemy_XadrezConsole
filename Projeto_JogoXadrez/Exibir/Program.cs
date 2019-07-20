@@ -43,7 +43,9 @@ namespace Projeto_JogoXadrez
                         Console.Write("\n  " + erro.Message);
                         Console.ReadKey();
                     }
-                } 
+                }
+                Tela.ImprimirTabuleiro(partidaDeXadrez.Tabuleiro);
+                Tela.ImprimirJogadaParte1(partidaDeXadrez);
             }
             catch (TabuleiroException erro)
             {
